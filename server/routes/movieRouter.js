@@ -67,6 +67,10 @@ router.post('/add/movieDetail', async(req, res) => {
             let file = req.files.moviePoster;
             moviePoster = 'uploads/moviePoster/' + uuidv4() + path.extname(file.name);
 
+            if(!fs.existsSync(`./public/uploads/moviePoster`)) {
+                mkdirp.sync('public/uploads/moviePoster');
+            };
+
             file.mv(`public/${moviePoster}`, (err) => {
                 if(err) return res.send({success:false, message: 'file uploading error'});
     
@@ -136,6 +140,10 @@ router.put('/update/movieDetail/:movieId', async(req, res) => {
         if(req.files) {
             let file = req.files.moviePoster;
             toUpdate['moviePoster'] = 'uploads/moviePoster/' + uuidv4() + path.extname(file.name);
+            
+            if(!fs.existsSync(`./public/uploads/moviePoster`)) {
+                mkdirp.sync('public/uploads/moviePoster');
+            };
             
             file.mv(`public/${toUpdate.moviePoster}`, (err) => {
                 if(err) return res.send({success:false, message: 'file uploading error'});
