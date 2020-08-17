@@ -1,0 +1,51 @@
+.example-card {
+  max-width: 400px;
+  margin-bottom: 30px;
+}
+
+mat-card {
+  background-color: lightblue;
+}
+
+.moreDetailbtn:hover {
+  border-radius: 5px;
+  color: whitesmoke;
+  background-color: royalblue;
+}
+
+.movHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleHeader {
+  padding-left: 45%;
+  padding-right: 45%;
+  font-size: 20px;
+  color: #123456;
+}
+
+.divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-divider {
+  width: 90%;
+}
+
+@media screen and (max-width: 955px) {
+
+  mat-divider {
+    width: 80%;
+  }
+
+  .titleHeader {
+    padding-left: 140px;
+    padding-right: 140px;
+    font-size: 16px;
+  }
+
+}

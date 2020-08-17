@@ -1,0 +1,40 @@
+<!--
+<header class="mainHeader">
+  <div fxFlex fxLayout="column" fxLayoutAlign="space-evenly center">
+      <h1 fxLayout="column" fxLayoutGap="5px"
+      class="comLable">Movie Searcher</h1>
+
+      <input onsearch="OnSearch(this)" onkeyup="filterDataByName(this)"
+      fxLayout="column" fxLayoutGap="5px"
+      class="form-control searchMovie" type="search" placeholder="Search your favorite Movie!">
+  </div>
+</header>
+ -->
+
+ <mat-toolbar>
+  <mat-toolbar-row>
+
+    <button mat-icon-button>
+      <mat-icon>live_tv</mat-icon>
+    </button>
+    <span class="comLable">Movie Searcher</span>
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" class="flexSearch">
+      <ul fxLayout="row" fxLayoutGap="20px">
+        <li>
+            <input matInput
+            (search)="OnSearch($event)" (keyup)="filterDataByName($event)"
+            fxLayout="column" fxLayoutGap="5px"
+            class="form-control searchMovie" type="search"
+            [placeholder]="placeholder">
+
+        </li>
+        <!-- <li>
+          <button mat-icon-button>
+            <mat-icon>search</mat-icon>
+          </button>
+        </li> -->
+      </ul>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

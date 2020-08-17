@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 // express fileUpload middleware //
 app.use(fileUpload());
 
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send("work '/api'")

@@ -78,6 +78,7 @@ router.post('/add/movieDetail', async(req, res) => {
             });
         };
 
+        let movieDescription = req.body.movieDescription;
         let releasedDate = req.body.releasedDate; // date
         let rated = req.body.rated;
         let imbd_rating = req.body.imbd_rating; // number
@@ -93,6 +94,7 @@ router.post('/add/movieDetail', async(req, res) => {
         movieSchema.create({
             movieName: movieName,
             moviePoster: moviePoster,
+            movieDescription: movieDescription,
             releasedDate: releasedDate, // date
             rated: rated,
             imbd_rating: imbd_rating, // number
@@ -158,17 +160,19 @@ router.put('/update/movieDetail/:movieId', async(req, res) => {
             };
         };
 
-        req.body.releasedDate ? ['releasedDate'] = req.body.releasedDate : ''; // date
-        req.body.rated        ? ['rated'] = req.body.rated : '';
-        req.body.imbd_rating  ? ['imbd_rating'] = req.body.imbd_rating : ''; // number
+        req.body.movieDescription ? toUpdate['movieDescription'] = req.body.movieDescription : '';
+
+        req.body.releasedDate ? toUpdate['releasedDate'] = req.body.releasedDate : ''; // date
+        req.body.rated        ? toUpdate['rated'] = req.body.rated : '';
+        req.body.imbd_rating  ? toUpdate['imbd_rating'] = req.body.imbd_rating : ''; // number
     
-        req.body.genre        ? ['genre'] = req.body.genre : ''; // array
+        req.body.genre        ? toUpdate['genre'] = req.body.genre : ''; // array
         
-        req.body.directorName ? ['directorName'] = req.body.directorName : ''; // array
+        req.body.directorName ? toUpdate['directorName'] = req.body.directorName : ''; // array
     
-        req.body.writerName   ? ['writerName'] = req.body.writerName : ''; // array
+        req.body.writerName   ? toUpdate['writerName'] = req.body.writerName : ''; // array
     
-        req.body.actorName    ? ['actorName'] = req.body.actorName : ''; // array
+        req.body.actorName    ? toUpdate['actorName'] = req.body.actorName : ''; // array
 
         movieSchema.findByIdAndUpdate(movieId,{$set: toUpdate},{new:true}).exec()
         .then(mov => {

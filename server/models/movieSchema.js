@@ -8,6 +8,10 @@ const movieSchema = mongoose.Schema({
         lowercase: true
     },
 
+    movieDescription: {
+        type: String
+    },
+    
     moviePoster: {
         type: String
     },
