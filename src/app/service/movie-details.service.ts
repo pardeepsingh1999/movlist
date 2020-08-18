@@ -28,11 +28,11 @@ export class MovieDetailsService {
   ) { }
 
   getAllMovieDetials() {
-    return this.http.get(environment.apiBaseUrl + '/movie/getAll/movieDetail');
+    return this.http.get('api/movie/getAll/movieDetail');
   };
 
   getOneMovieDetials(movieId: any) {
-    return this.http.get(environment.apiBaseUrl + '/movie/getOne/movieDetail/' + movieId);
+    return this.http.get('api//movie/getOne/movieDetail/' + movieId);
   };
 
   viewMovieDetialDialog(id: any) {
