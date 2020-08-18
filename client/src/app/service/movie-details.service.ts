@@ -14,26 +14,18 @@ import { MovieDetails } from '../models/movie-details.module';
 })
 export class MovieDetailsService {
 
+  allMovieData    : MovieDetails[];
+  filterMovieData : MovieDetails[];
+  movieDetails    : MovieDetails;
+
+  apiImgUrl = 'http://localhost:3000';
+
   constructor(
     public dialog: MatDialog,
     private http: HttpClient,
     private router: Router,
     private _snackBar: MatSnackBar
   ) { }
-
-  viewMovieDetialDialog(id: any) {
-    console.log(id)
-    let emp = {movieName:'pardeep'}
-    const dialogRef = this.dialog.open(OneMovieDetailsComponent, {
-      width: '600px',
-      data: emp
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // this.animal = result;
-    });
-  }
 
   getAllMovieDetials() {
     return this.http.get(environment.apiBaseUrl + '/movie/getAll/movieDetail');
@@ -43,6 +35,34 @@ export class MovieDetailsService {
     return this.http.get(environment.apiBaseUrl + '/movie/getOne/movieDetail/' + movieId);
   };
 
+  viewMovieDetialDialog(id: any) {
+    // console.log(id)
+
+    this.getOneMovieDetials(id).subscribe(
+      (res: any) => {
+        if(res.success) {
+          // console.log(res)
+          this.movieDetails = res.data;
+          this.movieDetails['releasedDate'] = new Date(this.movieDetails.releasedDate);
+          const dialogRef = this.dialog.open(OneMovieDetailsComponent, {
+            width: '600px',
+            data: this.movieDetails
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+            // this.animal = result;
+          });
+        } else {
+          this.openSnackBar(res.message, 'error')
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  };
+
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 5000,
@@ -50,5 +70,42 @@ export class MovieDetailsService {
       verticalPosition: 'top',
     });
   };
+
+  onSearchClear() {
+    console.log('clear')
+    this.getAllMovie();
+  };
+
+  filterMovieByName(movieName: string) {
+    // console.log(movieName)
+
+    this.allMovieData = this.filterMovieData;
+
+    var regexp = new RegExp(movieName+'.+$', 'i');
+
+    this.allMovieData = this.filterMovieData.filter(elem => {
+        return elem["movieName"].search(regexp) !== -1;
+    });
+
+  };
+
+  getAllMovie() {
+    this.getAllMovieDetials().subscribe(
+      (res: any) => {
+        if(res.success) {
+          // console.log(res)
+          this.allMovieData = res.data;
+          this.filterMovieData = res.data;
+          // console.log(this.allMovieData)
+
+        } else {
+          this.openSnackBar(res.message, 'error')
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
 
 }

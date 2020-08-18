@@ -19,7 +19,10 @@ const development = {
     mongodb: 'mongodb://localhost:27017/movlist'
 };
   
-let environment = process.env.NODE_ENV || 'development';
+// let environment = process.env.NODE_ENV || 'development';
+
+let environment = process.env.NODE_ENV || 'production';
+
 
 console.log(`Loaded Configs: ${environment}`);
 

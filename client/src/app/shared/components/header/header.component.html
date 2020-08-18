@@ -22,7 +22,7 @@
     <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" class="flexSearch">
       <ul fxLayout="row" fxLayoutGap="20px">
         <li>
-            <input matInput
+            <input matInput autofocus autocomplete="off"
             (search)="OnSearch($event)" (keyup)="filterDataByName($event)"
             fxLayout="column" fxLayoutGap="5px"
             class="form-control searchMovie" type="search"

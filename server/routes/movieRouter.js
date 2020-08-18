@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mkdirp = require('mkdirp');
+const path = require('path');
 const { v4:uuidv4 } = require('uuid');
 const fs = require('fs');
 
@@ -12,7 +13,7 @@ const movieSchema = require('../models/movieSchema');
 // fetch all movie
 router.get('/getAll/movieDetail', async(req, res) => {
     try {
-        movieSchema.find().exec()
+        movieSchema.find().sort({'releasedDate':-1}).exec()
         .then(mov => {
             if(!mov || mov.length == 0) {
                 return res.json({success: false, message: 'Movie list is empty'})
@@ -52,7 +53,7 @@ router.get('/getOne/movieDetail/:movieId', async(req, res) => {
 router.post('/add/movieDetail', async(req, res) => {
     try {
 
-        let movieName = req.body.movieName;
+        let movieName = req.body.movieName.toLowerCase();
         if(!movieName) {
             return res.json({success: false, message: "Movie name is required"});
         };
@@ -65,7 +66,7 @@ router.post('/add/movieDetail', async(req, res) => {
         let moviePoster;
         if(req.files) {
             let file = req.files.moviePoster;
-            moviePoster = 'uploads/moviePoster/' + uuidv4() + path.extname(file.name);
+            moviePoster = 'uploads/moviePoster/' + uuidv4().toString() + path.extname(file.name).toString();
 
             if(!fs.existsSync(`./public/uploads/moviePoster`)) {
                 mkdirp.sync('public/uploads/moviePoster');
@@ -81,16 +82,15 @@ router.post('/add/movieDetail', async(req, res) => {
         let movieDescription = req.body.movieDescription;
         let releasedDate = req.body.releasedDate; // date
         let rated = req.body.rated;
-        let imbd_rating = req.body.imbd_rating; // number
+        let imbd_rating = JSON.parse(req.body.imbd_rating); // number
     
-        let genre = req.body.genre; // array
+        let genre = JSON.parse(req.body.genre); // array
         
-        let directorName = req.body.directorName; // array
+        let directorName = JSON.parse(req.body.directorName); // array
     
-        let writerName = req.body.writerName; // array
+        let writerName = JSON.parse(req.body.writerName); // array
     
-        let actorName = req.body.actorName; // array
-
+        let actorName = JSON.parse(req.body.actorName); // array
         movieSchema.create({
             movieName: movieName,
             moviePoster: moviePoster,
@@ -132,11 +132,12 @@ router.put('/update/movieDetail/:movieId', async(req, res) => {
         let toUpdate = {};
 
         if(req.body.movieName) {
-            const movieDetail = await movieSchema.findOne({movieName: req.body.movieName});
+            const movieDetail = await movieSchema.findOne({movieName: req.body.movieName.toLowerCase()});
+            console.log(movieDetail)
             if(movieDetail) {
                 return res.json({success: false, message: "Movie name is already exist, choose another!"});
             };
-            toUpdate['movieName'] = req.body.movieName
+            toUpdate['movieName'] = req.body.movieName.toLowerCase()
         };
         
         if(req.files) {
@@ -160,19 +161,19 @@ router.put('/update/movieDetail/:movieId', async(req, res) => {
             };
         };
 
-        req.body.movieDescription ? toUpdate['movieDescription'] = req.body.movieDescription : '';
+        req.body.movieDescription ? toUpdate['movieDescription'] = req.body.movieDescription.toLowerCase() : '';
 
         req.body.releasedDate ? toUpdate['releasedDate'] = req.body.releasedDate : ''; // date
-        req.body.rated        ? toUpdate['rated'] = req.body.rated : '';
-        req.body.imbd_rating  ? toUpdate['imbd_rating'] = req.body.imbd_rating : ''; // number
+        req.body.rated        ? toUpdate['rated'] = req.body.rated.toLowerCase() : '';
+        req.body.imbd_rating  ? toUpdate['imbd_rating'] = JSON.parse(req.body.imbd_rating) : ''; // number
     
-        req.body.genre        ? toUpdate['genre'] = req.body.genre : ''; // array
+        req.body.genre        ? toUpdate['genre'] = JSON.parse(req.body.genre) : ''; // array
         
-        req.body.directorName ? toUpdate['directorName'] = req.body.directorName : ''; // array
+        req.body.directorName ? toUpdate['directorName'] = JSON.parse(req.body.directorName) : ''; // array
     
-        req.body.writerName   ? toUpdate['writerName'] = req.body.writerName : ''; // array
+        req.body.writerName   ? toUpdate['writerName'] = JSON.parse(req.body.writerName) : ''; // array
     
-        req.body.actorName    ? toUpdate['actorName'] = req.body.actorName : ''; // array
+        req.body.actorName    ? toUpdate['actorName'] = JSON.parse(req.body.actorName) : ''; // array
 
         movieSchema.findByIdAndUpdate(movieId,{$set: toUpdate},{new:true}).exec()
         .then(mov => {
@@ -187,7 +188,7 @@ router.put('/update/movieDetail/:movieId', async(req, res) => {
     };
 });
 
-// route -> '/api/movie/update/movieDetail/:movieId'
+// route -> '/api/movie/delete/movieDetail/:movieId'
 // delete movie
 router.delete('/delete/movieDetail/:movieId', async(req, res) => {
     try {

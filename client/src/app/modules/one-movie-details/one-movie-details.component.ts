@@ -10,6 +10,8 @@ import { MovieDetails } from '../../models/movie-details.module';
 })
 export class OneMovieDetailsComponent implements OnInit {
 
+  apiImgUrl = 'http://localhost:3000';
+
   constructor(
     public dialogRef: MatDialogRef<OneMovieDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MovieDetails

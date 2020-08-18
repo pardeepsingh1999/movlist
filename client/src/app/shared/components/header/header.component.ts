@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { MovieDetailsService } from 'src/app/service/movie-details.service';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -21,7 +23,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  constructor() { }
+  constructor(private movieDetailsService: MovieDetailsService) { }
 
   ngOnInit(): void {
       // console.log(window.innerWidth)
@@ -35,10 +37,13 @@ export class HeaderComponent implements OnInit {
   OnSearch(data: any) {
     // console.log(data.target.value.length)
     if(data.target.value.length == 0) {
-      console.log('clear')
+      this.movieDetailsService.onSearchClear();
     }
-  }
+  };
+
   filterDataByName(data: any) {
-    console.log(data.target.value)
-  }
+    // console.log(data.target.value)
+    this.movieDetailsService.filterMovieByName(data.target.value);
+  };
+
 }

@@ -10,31 +10,15 @@ import { MovieDetailsService } from 'src/app/service/movie-details.service';
 export class AllMovieDetailsComponent implements OnInit {
 
   constructor(
-    private movieDetailsService: MovieDetailsService
+    public movieDetailsService: MovieDetailsService
     ) { }
 
   ngOnInit(): void {
-    this.getAllMovie()
+    this.movieDetailsService.getAllMovie();
   }
 
   openMovieDetialDialog(id: any) {
     this.movieDetailsService.viewMovieDetialDialog(id);
   };
 
-  getAllMovie() {
-    this.movieDetailsService.getAllMovieDetials().subscribe(
-      (res: any) => {
-        if(res.success) {
-          console.log(res)
-        } else {
-          this.movieDetailsService.openSnackBar(res.message, 'error')
-        }
-      },
-      err => {
-        console.log(err)
-      }
-    )
-  }
-
-
-}
+};

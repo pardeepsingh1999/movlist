@@ -2,8 +2,9 @@
 
   <div fxFlex fxLayout="row wrap" fxLayoutAlign="space-around">
     <div fxLayout="row" fxLayoutGap="20px">
-      <img class="moviePoster" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-
+      <img class="moviePoster"
+      src="{{this.apiImgUrl}}/{{data.moviePoster}}"
+      alt="{{data.movieName}}">
     </div>
 
     <div fxLayout="row" fxLayoutGap="20px">
@@ -15,13 +16,13 @@
         <br>
         <mat-divider></mat-divider>
         <br>
-        <p><strong>Genre:</strong> {{data.movieName | uppercase}}</p>
-        <p><strong>Released:</strong> {{data.movieName | uppercase}}</p>
-        <p><strong>Rated:</strong> {{data.movieName | uppercase}}</p>
-        <p><strong>IMDB Rating:</strong> {{data.movieName | uppercase}}</p>
-        <p><strong>Director:</strong> {{data.movieName | uppercase}}</p>
-        <p><strong>Writer:</strong> {{data.movieName | uppercase}}</p>
-        <p><strong>Star:</strong> {{data.movieName | uppercase}}</p>
+        <p><strong>Genre:</strong> <span *ngFor="let type of data.genre"> {{type | titlecase}}, </span></p>
+        <p><strong>Released:</strong> {{data.releasedDate.toDateString()}}</p>
+        <p><strong>Rated:</strong> {{data.rated | uppercase}}</p>
+        <p><strong>IMDB Rating:</strong> {{data.imbd_rating}}</p>
+        <p><strong>Director:</strong> <span *ngFor="let director of data.directorName"> {{director | titlecase}}, </span></p>
+        <p><strong>Writer:</strong> <span *ngFor="let writer of data.writerName"> {{writer | titlecase}}, </span></p>
+        <p><strong>Star:</strong> <span *ngFor="let actor of data.actorName"> {{actor | titlecase}}, </span></p>
 
 
       </mat-card>

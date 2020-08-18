@@ -1,5 +1,7 @@
 export class MovieDetails {
 
+  _id: String;
+
   movieName:        String;
   movieDescription: String;
   moviePoster:      String;
